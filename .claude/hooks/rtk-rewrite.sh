@@ -190,6 +190,16 @@ elif echo "$MATCH_CMD" | grep -qE '^mypy([[:space:]]|$)'; then
 elif echo "$MATCH_CMD" | grep -qE '^python[[:space:]]+-m[[:space:]]+mypy([[:space:]]|$)'; then
   REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^python -m mypy/rtk mypy/')"
 
+# --- Ruby tooling (rspec) ---
+elif echo "$MATCH_CMD" | grep -qE '^bundle[[:space:]]+exec[[:space:]]+rspec([[:space:]]|$)'; then
+  REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^bundle exec rspec/rtk rspec/')"
+elif echo "$MATCH_CMD" | grep -qE '^bin/rspec([[:space:]]|$)'; then
+  REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's|^bin/rspec|rtk rspec|')"
+elif echo "$MATCH_CMD" | grep -qE '^rspec([[:space:]]|$)'; then
+  REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^rspec/rtk rspec/')"
+elif echo "$MATCH_CMD" | grep -qE '^bundle[[:space:]]+exec[[:space:]]+rails[[:space:]]+spec([[:space:]]|$)'; then
+  REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^bundle exec rails spec/rtk rspec/')"
+
 # --- Go tooling ---
 elif echo "$MATCH_CMD" | grep -qE '^go[[:space:]]+test([[:space:]]|$)'; then
   REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^go test/rtk go test/')"

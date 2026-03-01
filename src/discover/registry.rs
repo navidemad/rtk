@@ -71,6 +71,7 @@ const PATTERNS: &[&str] = &[
     r"^curl\s+",
     r"^wget\s+",
     r"^(python3?\s+-m\s+)?mypy(\s|$)",
+    r"^(?:bundle\s+exec\s+)?rspec(?:\s|$)",
 ];
 
 const RULES: &[RtkRule] = &[
@@ -233,6 +234,13 @@ const RULES: &[RtkRule] = &[
         subcmd_savings: &[],
         subcmd_status: &[],
     },
+    RtkRule {
+        rtk_cmd: "rtk rspec",
+        category: "Tests",
+        savings_pct: 65.0,
+        subcmd_savings: &[],
+        subcmd_status: &[],
+    },
 ];
 
 /// Commands to ignore (shell builtins, trivial, already rtk).
@@ -288,7 +296,9 @@ const IGNORED_PREFIXES: &[&str] = &[
     "case ",
 ];
 
-const IGNORED_EXACT: &[&str] = &["cd", "echo", "true", "false", "wait", "pwd", "bash", "sh", "fi", "done"];
+const IGNORED_EXACT: &[&str] = &[
+    "cd", "echo", "true", "false", "wait", "pwd", "bash", "sh", "fi", "done",
+];
 
 lazy_static! {
     static ref REGEX_SET: RegexSet = RegexSet::new(PATTERNS).expect("invalid regex patterns");
@@ -791,4 +801,27 @@ mod tests {
             }
         );
     }
+
+    #[test]
+    fn test_classify_rspec() {
+        match classify_command("rspec spec/models/") {
+            Classification::Supported {
+                rtk_equivalent: "rtk rspec",
+                ..
+            } => {}
+            other => panic!("rspec should be Supported, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn test_classify_bundle_exec_rspec() {
+        match classify_command("bundle exec rspec") {
+            Classification::Supported {
+                rtk_equivalent: "rtk rspec",
+                ..
+            } => {}
+            other => panic!("bundle exec rspec should be Supported, got {:?}", other),
+        }
+    }
+
 }

@@ -1,3 +1,4 @@
+mod bundle_cmd;
 mod cargo_cmd;
 mod cc_economics;
 mod ccusage;
@@ -37,6 +38,7 @@ mod prettier_cmd;
 mod prisma_cmd;
 mod pytest_cmd;
 mod read;
+mod rubocop_cmd;
 mod ruff_cmd;
 mod runner;
 mod summary;
@@ -523,6 +525,20 @@ enum Commands {
     /// Pip package manager with compact output (auto-detects uv)
     Pip {
         /// Pip arguments (e.g., list, outdated, install)
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        args: Vec<String>,
+    },
+
+    /// RuboCop linter with compact output (Ruby)
+    Rubocop {
+        /// RuboCop arguments (e.g., --auto-correct, -A)
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        args: Vec<String>,
+    },
+
+    /// Bundle (Bundler) package manager with compact output (Ruby)
+    Bundle {
+        /// Bundle arguments (e.g., list, outdated, install)
         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
         args: Vec<String>,
     },
@@ -1442,6 +1458,14 @@ fn main() -> Result<()> {
 
         Commands::GolangciLint { args } => {
             golangci_cmd::run(&args, cli.verbose)?;
+        }
+
+        Commands::Rubocop { args } => {
+            rubocop_cmd::run(&args, cli.verbose)?;
+        }
+
+        Commands::Bundle { args } => {
+            bundle_cmd::run(&args, cli.verbose)?;
         }
 
         Commands::HookAudit { since } => {
