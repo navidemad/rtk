@@ -1,4 +1,3 @@
-mod bundle_cmd;
 mod cargo_cmd;
 mod cc_economics;
 mod ccusage;
@@ -1462,10 +1461,6 @@ fn main() -> Result<()> {
 
         Commands::Rubocop { args } => {
             rubocop_cmd::run(&args, cli.verbose)?;
-        }
-
-        Commands::Bundle { args } => {
-            bundle_cmd::run(&args, cli.verbose)?;
         }
 
         Commands::HookAudit { since } => {

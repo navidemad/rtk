@@ -175,6 +175,7 @@ rtk pytest                       # Python tests (failures only, 90% reduction)
 rtk pip list                     # Python packages (auto-detect uv, 70% reduction)
 rtk go test                      # Go tests (NDJSON, 90% reduction)
 rtk golangci-lint run            # Go linting (JSON, 85% reduction)
+rtk rubocop                      # RuboCop linting (JSON, 60%+ reduction)
 ```
 
 ### Data & Analytics
@@ -282,6 +283,13 @@ rtk go test                      # NDJSON streaming parser (90% reduction)
 rtk go build                     # Build errors only (80% reduction)
 rtk go vet                       # Vet issues (75% reduction)
 rtk golangci-lint run            # JSON grouped by rule (85% reduction)
+```
+
+### Ruby on Rails Stack
+```bash
+# Linting
+rtk rubocop                      # RuboCop (JSON, group by cop, 60%+ reduction)
+rtk rubocop -A                   # Auto-correct with summary
 ```
 
 ## Examples
@@ -625,6 +633,7 @@ The hook is included in this repository at `.claude/hooks/rtk-rewrite.sh`. To us
 | `pip list/install/outdated` | `rtk pip ...` |
 | `go test/build/vet` | `rtk go ...` |
 | `golangci-lint run` | `rtk golangci-lint run` |
+| `rubocop/bundle exec rubocop` | `rtk rubocop ...` |
 | `rspec/bundle exec rspec/bin/rspec` | `rtk rspec ...` |
 | `docker ps/images/logs` | `rtk docker ...` |
 | `kubectl get/logs` | `rtk kubectl ...` |
