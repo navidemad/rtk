@@ -175,6 +175,12 @@ rtk pytest                       # Python tests (failures only, 90% reduction)
 rtk pip list                     # Python packages (auto-detect uv, 70% reduction)
 rtk go test                      # Go tests (NDJSON, 90% reduction)
 rtk golangci-lint run            # Go linting (JSON, 85% reduction)
+rtk rspec                        # RSpec tests (JSON, 60%+ reduction)
+rtk rubocop                      # RuboCop linting (JSON, 60%+ reduction)
+rtk bundle list                  # Bundler packages (compact format)
+rtk rails test                   # Rails minitest (failures only, 50%+ reduction)
+rtk rails routes                 # Routes grouped by controller (50%+ reduction)
+rtk rails db:migrate             # Migration summary (40%+ reduction)
 ```
 
 ### Data & Analytics
@@ -282,6 +288,32 @@ rtk go test                      # NDJSON streaming parser (90% reduction)
 rtk go build                     # Build errors only (80% reduction)
 rtk go vet                       # Vet issues (75% reduction)
 rtk golangci-lint run            # JSON grouped by rule (85% reduction)
+```
+
+### Ruby on Rails Stack
+```bash
+# Testing
+rtk rspec                        # RSpec tests (JSON parser, 60%+ reduction)
+rtk rspec spec/models/            # Run specific directory
+rtk rails test                   # Minitest (state machine parser, 50%+ reduction)
+rtk rails test test/models/       # Run specific directory
+
+# Linting
+rtk rubocop                      # RuboCop (JSON, group by cop, 60%+ reduction)
+rtk rubocop -A                   # Auto-correct with summary
+
+# Package Management
+rtk bundle list                  # Gem list with counts (10%+ reduction)
+rtk bundle outdated              # Outdated gems with version transitions (30%+ reduction)
+rtk bundle install               # Install summary (new/updated gems only)
+rtk bundle update                # Update summary (same filter as install)
+
+# Rails
+rtk rails routes                 # Routes grouped by controller (50%+ reduction)
+rtk rails db:migrate             # Migration summary (40%+ reduction)
+rtk rails db:migrate:status      # Pending migration status
+rtk rails db:rollback            # Rollback summary
+rtk rails generate model User    # Generator summary (created files)
 ```
 
 ## Examples
@@ -629,6 +661,11 @@ The hook is included in this repository at `.claude/hooks/rtk-rewrite.sh`. To us
 | `kubectl get/logs` | `rtk kubectl ...` |
 | `curl` | `rtk curl` |
 | `pnpm list/ls/outdated` | `rtk pnpm ...` |
+| `rspec/bundle exec rspec/bin/rspec` | `rtk rspec ...` |
+| `rubocop/bundle exec rubocop` | `rtk rubocop ...` |
+| `bundle list/outdated/install/update` | `rtk bundle ...` |
+| `rails test/routes/db:migrate/...` | `rtk rails ...` |
+| `rake routes/db:migrate` | `rtk rails ...` |
 
 Commands already using `rtk`, heredocs (`<<`), and unrecognized commands pass through unchanged.
 
